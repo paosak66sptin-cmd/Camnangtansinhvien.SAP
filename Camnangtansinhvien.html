@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cẩm nang Tân sinh viên | Hành trang Vững bước Tương lai</title>
+    
+    <!-- Google Fonts: EB Garamond & Be Vietnam Pro -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=EB+Garamond:ital,wght@0,500;0,600;0,700;0,800;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#080d1a',
+                        },
+                        academic: {
+                            blue: '#1E3A8A',
+                            gold: '#D97706',
+                            goldHover: '#B45309',
+                            lightBg: '#F8FAFC',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Be Vietnam Pro"', 'sans-serif'],
+                        serif: ['"EB Garamond"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+        .font-academic {
+            font-family: 'EB Garamond', serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-amber-200 selection:text-amber-900">
+
+    <!-- ========================================== -->
+    <!-- HEADER & NAVIGATION                        -->
+    <!-- ========================================== -->
+    <header class="sticky top-0 z-50 glass-nav text-white shadow-lg transition-all duration-300 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#home" onclick="showSection('home')" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-navy-950 shadow-md group-hover:scale-105 transition-transform duration-300">
+                        <i class="fa-solid fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-academic text-2xl font-bold tracking-tight text-white block leading-none">CẨM NANG</span>
+                        <span class="text-xs tracking-widest text-amber-400 uppercase font-semibold">Tân Sinh Viên</span>
+                    </div>
+                </a>
+
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden md:flex items-center relative w-64 lg:w-80">
+                    <input type="text" id="globalSearch" oninput="handleGlobalSearch(this.value)" placeholder="Tìm kiếm hướng dẫn, thủ tục..." 
+                           class="w-full bg-slate-800/80 text-sm text-slate-100 placeholder-slate-400 rounded-full py-2 pl-10 pr-4 border border-slate-700 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-slate-400 text-sm"></i>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden lg:flex items-center space-x-1 font-medium text-sm">
+                    <button onclick="showSection('home')" class="nav-btn px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400 transition" id="nav-home">
+                        <i class="fa-solid fa-house mr-1.5 opacity-70"></i>Trang chủ
+                    </button>
+                    <button onclick="showSection('handbook')" class="nav-btn px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400 transition" id="nav-handbook">
+                        <i class="fa-solid fa-book-open mr-1.5 opacity-70"></i>Cẩm nang
+                    </button>
+                    <button onclick="showSection('campus')" class="nav-btn px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400 transition" id="nav-campus">
+                        <i class="fa-solid fa-map-location-dot mr-1.5 opacity-70"></i>Sơ đồ khu
+                    </button>
+                    <button onclick="showSection('tools')" class="nav-btn px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400 transition" id="nav-tools">
+                        <i class="fa-solid fa-toolbox mr-1.5 opacity-70"></i>Công cụ
+                    </button>
+                    <button onclick="showSection('faq')" class="nav-btn px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400 transition" id="nav-faq">
+                        <i class="fa-solid fa-circle-question mr-1.5 opacity-70"></i>Hỏi đáp
+                    </button>
+                    <button onclick="showSection('contact')" class="nav-btn px-3 py-2 rounded-lg hover:bg-slate-800 hover:text-amber-400 transition" id="nav-contact">
+                        <i class="fa-solid fa-headset mr-1.5 opacity-70"></i>Liên hệ
+                    </button>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center gap-2">
+                    <button onclick="toggleMobileMenu()" class="p-2 rounded-lg bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700">
+                        <i class="fa-solid fa-bars text-xl" id="menuIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-slate-900 border-b border-slate-800 px-4 pt-2 pb-6 space-y-3">
+            <div class="relative mb-3 pt-2">
+                <input type="text" oninput="handleGlobalSearch(this.value)" placeholder="Tìm kiếm nhanh..." 
+                       class="w-full bg-slate-800 text-sm text-slate-100 placeholder-slate-400 rounded-full py-2.5 pl-10 pr-4 border border-slate-700 focus:outline-none focus:border-amber-400">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-5 text-slate-400 text-sm"></i>
+            </div>
+            <button onclick="showSection('home'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 hover:text-amber-400 flex items-center gap-3">
+                <i class="fa-solid fa-house w-5 text-amber-400"></i>Trang chủ
+            </button>
+            <button onclick="showSection('handbook'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 hover:text-amber-400 flex items-center gap-3">
+                <i class="fa-solid fa-book-open w-5 text-amber-400"></i>Cẩm nang
+            </button>
+            <button onclick="showSection('campus'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 hover:text-amber-400 flex items-center gap-3">
+                <i class="fa-solid fa-map-location-dot w-5 text-amber-400"></i>Sơ đồ các khu
+            </button>
+            <button onclick="showSection('tools'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 hover:text-amber-400 flex items-center gap-3">
+                <i class="fa-solid fa-toolbox w-5 text-amber-400"></i>Công cụ tương tác
+            </button>
+            <button onclick="showSection('faq'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 hover:text-amber-400 flex items-center gap-3">
+                <i class="fa-solid fa-circle-question w-5 text-amber-400"></i>Hỏi đáp (FAQ)
+            </button>
+            <button onclick="showSection('contact'); toggleMobileMenu();" class="w-full text-left px-4 py-2.5 rounded-lg text-slate-200 hover:bg-slate-800 hover:text-amber-400 flex items-center gap-3">
+                <i class="fa-solid fa-headset w-5 text-amber-400"></i>Hỗ trợ & Liên hệ
+            </button>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- MAIN CONTENT CONTAINER                     -->
+    <!-- ========================================== -->
+    <main class="flex-grow">
+        
+        <!-- SECTION 1: TRANG CHỦ (HOME) -->
+        <section id="section-home" class="page-section">
+            
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-b from-navy-900 via-navy-800 to-slate-900 text-white overflow-hidden pt-12 pb-24 px-4 sm:px-6 lg:px-8">
+                <!-- Decorative Circles -->
+                <div class="absolute -top-24 -left-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute bottom-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center relative z-10">
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold tracking-wide uppercase">
+                            <i class="fa-solid fa-star"></i> Chào mừng K69 Tân Sinh Viên
+                        </div>
+                        <h1 class="font-academic text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-slate-50">
+                            Khởi Đầu Tự Tin,<br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500">Chinh Phục Tri Thức Mới</span>
+                        </h1>
+                        <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed">
+                            Cổng thông tin toàn diện tích hợp hướng dẫn thủ tục nhập học, sơ đồ khuôn viên, công cụ quản lý hồ sơ và tính toán chi phí sinh hoạt dành riêng cho tân sinh viên.
+                        </p>
+                        <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
+                            <button onclick="showSection('handbook')" class="px-7 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-navy-950 font-bold text-sm shadow-lg shadow-amber-500/25 hover:scale-105 transition-all duration-300 flex items-center gap-2">
+                                Khám phá ngay <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button onclick="showSection('tools')" class="px-7 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 hover:border-slate-500 hover:scale-105 transition-all duration-300 flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-amber-400"></i> Checklist Nhập học
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Countdown Widget -->
+                    <div class="lg:col-span-5">
+                        <div class="glass-card bg-slate-900/80 rounded-3xl p-6 sm:p-8 border border-slate-700/80 shadow-2xl text-center relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-28 h-28 bg-amber-500/10 rounded-bl-full pointer-events-none"></div>
+                            
+                            <h3 class="font-academic text-2xl font-bold text-amber-400 mb-1">Đếm Ngược Ngày Nhập Học</h3>
+                            <p class="text-xs text-slate-400 mb-6">Đại hội Tân Sinh viên & Lễ Khai giảng Khóa Mới</p>
+
+                            <div class="grid grid-cols-4 gap-2 sm:gap-4 text-center">
+                                <div class="bg-slate-800/90 rounded-2xl p-3 border border-slate-700">
+                                    <span id="cd-days" class="font-academic text-2xl sm:text-4xl font-bold text-amber-400 block">00</span>
+                                    <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold">Ngày</span>
+                                </div>
+                                <div class="bg-slate-800/90 rounded-2xl p-3 border border-slate-700">
+                                    <span id="cd-hours" class="font-academic text-2xl sm:text-4xl font-bold text-amber-400 block">00</span>
+                                    <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold">Giờ</span>
+                                </div>
+                                <div class="bg-slate-800/90 rounded-2xl p-3 border border-slate-700">
+                                    <span id="cd-minutes" class="font-academic text-2xl sm:text-4xl font-bold text-amber-400 block">00</span>
+                                    <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold">Phút</span>
+                                </div>
+                                <div class="bg-slate-800/90 rounded-2xl p-3 border border-slate-700">
+                                    <span id="cd-seconds" class="font-academic text-2xl sm:text-4xl font-bold text-amber-400 block">00</span>
+                                    <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold">Giây</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 pt-5 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300">
+                                <span class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                                    Địa điểm: Hội trường Trung tâm A1
+                                </span>
+                                <span class="font-medium text-amber-400">08:00 AM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Access Cards Section -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    
+                    <div onclick="showSection('handbook'); filterGuide('thutuclink');" class="glass-card bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-slate-100 group">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-50 text-academic-blue flex items-center justify-center text-2xl mb-4 group-hover:bg-academic-blue group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </div>
+                        <h4 class="font-academic text-xl font-bold text-slate-900 group-hover:text-academic-blue transition">Thủ Tục Hồ Sơ</h4>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Hướng dẫn chi tiết quy trình nộp học bạ, giấy xác nhận và đăng ký nhập học trực tuyến.</p>
+                        <div class="mt-4 flex items-center text-xs font-semibold text-academic-blue group-hover:translate-x-1 transition-transform">
+                            Xem chi tiết <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="showSection('campus')" class="glass-card bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-slate-100 group">
+                        <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-4 group-hover:bg-amber-500 group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <h4 class="font-academic text-xl font-bold text-slate-900 group-hover:text-amber-600 transition">Sơ Đồ Cơ Sở</h4>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Tra cứu vị trí phòng học, thư viện, ký túc xá và các khu dịch vụ sinh viên nhanh chóng.</p>
+                        <div class="mt-4 flex items-center text-xs font-semibold text-amber-600 group-hover:translate-x-1 transition-transform">
+                            Khám phá bản đồ <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="showSection('tools')" class="glass-card bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-slate-100 group">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <h4 class="font-academic text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition">Dự Toán Chi Phí</h4>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Công cụ tính toán học phí, sinh hoạt phí và chi phí trọ/KTX tháng đầu tiên.</p>
+                        <div class="mt-4 flex items-center text-xs font-semibold text-emerald-600 group-hover:translate-x-1 transition-transform">
+                            Tính chi phí <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </div>
+                    </div>
+
+                    <div onclick="showSection('contact')" class="glass-card bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer border border-slate-100 group">
+                        <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl mb-4 group-hover:bg-rose-600 group-hover:text-white transition-colors duration-300">
+                            <i class="fa-solid fa-phone-volume"></i>
+                        </div>
+                        <h4 class="font-academic text-xl font-bold text-slate-900 group-hover:text-rose-600 transition">Hotline Khẩn Cấp</h4>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Danh bạ đường dây nóng phòng Đào tạo, Y tế, KTX và hỗ trợ kỹ thuật 24/7.</p>
+                        <div class="mt-4 flex items-center text-xs font-semibold text-rose-600 group-hover:translate-x-1 transition-transform">
+                            Gọi hỗ trợ ngay <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Highlights / Stats Bar -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div class="bg-navy-900 text-white rounded-3xl p-8 sm:p-12 shadow-xl relative overflow-hidden">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center relative z-10">
+                        <div>
+                            <span class="font-academic text-4xl sm:text-5xl font-extrabold text-amber-400 block mb-1">50+</span>
+                            <span class="text-xs sm:text-sm text-slate-300">Bài viết hướng dẫn</span>
+                        </div>
+                        <div>
+                            <span class="font-academic text-4xl sm:text-5xl font-extrabold text-amber-400 block mb-1">15+</span>
+                            <span class="text-xs sm:text-sm text-slate-300">Giấy tờ thủ tục mẫu</span>
+                        </div>
+                        <div>
+                            <span class="font-academic text-4xl sm:text-5xl font-extrabold text-amber-400 block mb-1">100%</span>
+                            <span class="text-xs sm:text-sm text-slate-300">Miễn phí & Cập nhật</span>
+                        </div>
+                        <div>
+                            <span class="font-academic text-4xl sm:text-5xl font-extrabold text-amber-400 block mb-1">24/7</span>
+                            <span class="text-xs sm:text-sm text-slate-300">Kênh hỗ trợ giải đáp</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: CẨM NANG SINH VIÊN (HANDBOOK) -->
+        <section id="section-handbook" class="page-section hidden py-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <span class="text-amber-600 font-semibold text-xs tracking-wider uppercase bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Kho Tri Thức Sinh Viên</span>
+                    <h2 class="font-academic text-3xl sm:text-4xl font-bold text-slate-900 mt-2">Cẩm Nang & Hướng Dẫn</h2>
+                    <p class="text-slate-600 text-sm mt-2">Tổng hợp các bài viết chuyên sâu về quy trình nhập học, kinh nghiệm học tập và bí quyết hòa nhập môi trường đại học.</p>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap justify-center gap-2 mb-8" id="handbook-filters">
+                    <button onclick="filterArticles('all')" class="hb-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-navy-900 text-white shadow-sm transition">Tất cả bài viết</button>
+                    <button onclick="filterArticles('thutuc')" class="hb-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition">Thủ tục nhập học</button>
+                    <button onclick="filterArticles('hocvu')" class="hb-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition">Học vụ & Học bổng</button>
+                    <button onclick="filterArticles('kytucxa')" class="hb-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition">Ký túc xá & Nhà trọ</button>
+                    <button onclick="filterArticles('doisong')" class="hb-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition">Đời sống sinh viên</button>
+                </div>
+
+                <!-- Articles Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="articles-grid">
+                    <!-- Dynamic Articles will be injected by JavaScript -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: SƠ ĐỒ CÁC KHU (CAMPUS MAP) -->
+        <section id="section-campus" class="page-section hidden py-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <span class="text-amber-600 font-semibold text-xs tracking-wider uppercase bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Định Vị Khuôn Viên</span>
+                    <h2 class="font-academic text-3xl sm:text-4xl font-bold text-slate-900 mt-2">Sơ Đồ & Địa Điểm Quan Trọng</h2>
+                    <p class="text-slate-600 text-sm mt-2">Dễ dàng tra cứu vị trí các tòa nhà giảng đường, thư viện, khu hành chính và dịch vụ tiện ích trong trường.</p>
+                </div>
+
+                <!-- Category Selector -->
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    <button onclick="filterLocations('all')" class="loc-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-navy-900 text-white shadow-sm transition">Tất cả địa điểm</button>
+                    <button onclick="filterLocations('giangduong')" class="loc-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-700 border border-slate-200 transition">Giảng đường</button>
+                    <button onclick="filterLocations('thuvien')" class="loc-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-700 border border-slate-200 transition">Thư viện</button>
+                    <button onclick="filterLocations('ktx')" class="loc-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-700 border border-slate-200 transition">Ký túc xá</button>
+                    <button onclick="filterLocations('phongban')" class="loc-filter-btn px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-700 border border-slate-200 transition">Phòng ban hành chính</button>
+                </div>
+
+                <!-- Locations Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="locations-grid">
+                    <!-- Dynamic Location Cards Loaded Here -->
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 4: BỘ CÔNG CỤ TƯƠNG TÁC (TOOLS) -->
+        <section id="section-tools" class="page-section hidden py-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <span class="text-amber-600 font-semibold text-xs tracking-wider uppercase bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Tiện Ích Sinh Viên</span>
+                    <h2 class="font-academic text-3xl sm:text-4xl font-bold text-slate-900 mt-2">Bộ Công Cụ Tương Tác</h2>
+                    <p class="text-slate-600 text-sm mt-2">Trợ lý đắc lực giúp bạn quản lý checklist giấy tờ nhập học và dự toán kế hoạch tài chính cá nhân.</p>
+                </div>
+
+                <!-- Tool Tabs -->
+                <div class="flex justify-center mb-10">
+                    <div class="bg-slate-200 p-1 rounded-2xl inline-flex">
+                        <button onclick="switchToolTab('checklist')" id="tab-btn-checklist" class="px-6 py-2.5 rounded-xl text-sm font-bold bg-white text-navy-900 shadow-sm transition">
+                            <i class="fa-solid fa-square-check mr-2 text-emerald-600"></i>Checklist Nhập Học
+                        </button>
+                        <button onclick="switchToolTab('budget')" id="tab-btn-budget" class="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:text-navy-900 transition">
+                            <i class="fa-solid fa-calculator mr-2 text-amber-600"></i>Dự Toán Chi Phí
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TOOL 1: CHECKLIST NHẬP HỌC -->
+                <div id="tool-checklist-wrapper" class="max-w-3xl mx-auto">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-8">
+                        
+                        <!-- Progress Header -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="font-academic text-2xl font-bold text-slate-900">Danh Sách Giấy Tờ Cần Chuẩn Bị</h3>
+                                <span id="checklist-count" class="text-xs font-bold px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">0/0 Đã hoàn thành</span>
+                            </div>
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-slate-100 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                                <div id="checklist-progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Add Item Input -->
+                        <form onsubmit="addChecklistItem(event)" class="flex gap-2 mb-6">
+                            <input type="text" id="new-item-input" placeholder="Thêm giấy tờ hoặc công việc cá nhân..." required
+                                   class="flex-grow px-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 focus:bg-white transition">
+                            <button type="submit" class="px-5 py-3 bg-navy-900 hover:bg-slate-800 text-white font-semibold text-sm rounded-xl transition flex items-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Thêm
+                            </button>
+                        </form>
+
+                        <!-- Items List -->
+                        <div id="checklist-items-container" class="space-y-3 mb-6 max-h-96 overflow-y-auto pr-1">
+                            <!-- Dynamic Items Loaded Here -->
+                        </div>
+
+                        <!-- Reset Button -->
+                        <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-circle-info mr-1"></i>Dữ liệu được lưu tự động trên thiết bị của bạn.</span>
+                            <button onclick="resetChecklist()" class="text-xs text-rose-500 hover:text-rose-700 font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-right"></i> Đặt lại mặc định
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- TOOL 2: DỰ TOÁN CHI PHÍ (BUDGET PLANNER) -->
+                <div id="tool-budget-wrapper" class="hidden max-w-4xl mx-auto">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 p-6 sm:p-8 grid md:grid-cols-12 gap-8">
+                        
+                        <!-- Inputs Form -->
+                        <div class="md:col-span-7 space-y-4">
+                            <h3 class="font-academic text-2xl font-bold text-slate-900 mb-4 border-b pb-2">Các Khoản Chi Phí Tháng Đầu</h3>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Học phí kỳ 1 (Ước tính VNĐ)</label>
+                                <input type="number" id="bg-hocphi" value="8500000" oninput="calculateBudget()" class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 font-semibold">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tiền KKTX / Nhà trọ tháng đầu (VNĐ)</label>
+                                <input type="number" id="bg-nhatro" value="2500000" oninput="calculateBudget()" class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 font-semibold">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Tiền Ăn uống / Sinh hoạt tháng (VNĐ)</label>
+                                <input type="number" id="bg-anuong" value="3000000" oninput="calculateBudget()" class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 font-semibold">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Di chuyển / Xe cộ</label>
+                                    <input type="number" id="bg-dichuyen" value="500000" oninput="calculateBudget()" class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 font-semibold">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Đồ dùng / Sắm sửa ban đầu</label>
+                                    <input type="number" id="bg-dodung" value="1500000" oninput="calculateBudget()" class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500 font-semibold">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Results & Breakdown -->
+                        <div class="md:col-span-5 bg-navy-900 text-white rounded-2xl p-6 flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-xs font-semibold uppercase text-amber-400 tracking-wider mb-1">Tổng Ngân Sách Tháng Đầu</h4>
+                                <span id="bg-total-display" class="font-academic text-3xl font-extrabold text-white block mb-4">16,000,000 VNĐ</span>
+
+                                <div class="space-y-3 border-t border-slate-800 pt-4 text-xs">
+                                    <div>
+                                        <div class="flex justify-between text-slate-300 mb-1">
+                                            <span>Học phí:</span>
+                                            <span id="pct-hocphi" class="font-semibold text-amber-300">53%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                            <div id="bar-hocphi" class="bg-amber-400 h-full" style="width: 53%"></div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="flex justify-between text-slate-300 mb-1">
+                                            <span>Tiền ở & Sinh hoạt:</span>
+                                            <span id="pct-nhatro" class="font-semibold text-sky-300">34%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                            <div id="bar-nhatro" class="bg-sky-400 h-full" style="width: 34%"></div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="flex justify-between text-slate-300 mb-1">
+                                            <span>Khác (Sắm sửa, đi lại):</span>
+                                            <span id="pct-khac" class="font-semibold text-emerald-300">13%</span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                                            <div id="bar-khac" class="bg-emerald-400 h-full" style="width: 13%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t border-slate-800 bg-slate-800/50 p-3 rounded-xl">
+                                <span class="text-[11px] text-slate-300 block">💡 <strong>Mẹo tiết kiệm:</strong> Đăng ký Ký túc xá trường có thể giảm đến 60% chi phí ở tháng đầu!</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 5: HỎI ĐÁP (FAQ) -->
+        <section id="section-faq" class="page-section hidden py-10">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <span class="text-amber-600 font-semibold text-xs tracking-wider uppercase bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Thắc Mắc Thường Gặp</span>
+                    <h2 class="font-academic text-3xl sm:text-4xl font-bold text-slate-900 mt-2">Hỏi Đáp & Giải Đáp Tức Thì</h2>
+                    <p class="text-slate-600 text-sm mt-2">Tra cứu câu trả lời chuẩn xác cho các thắc mắc phổ biến về học tập, thủ tục và đời sống.</p>
+                </div>
+
+                <!-- FAQ Search Bar -->
+                <div class="relative max-w-xl mx-auto mb-8">
+                    <input type="text" id="faqSearchInput" oninput="filterFAQs(this.value)" placeholder="Nhập từ khóa thắc mắc (VD: bảo hiểm, học bổng, KTX...)" 
+                           class="w-full px-5 py-3.5 pl-12 text-sm bg-white border border-slate-200 rounded-2xl shadow-sm focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400 text-base"></i>
+                </div>
+
+                <!-- FAQ Accordion Container -->
+                <div class="space-y-4" id="faq-list">
+                    <!-- Dynamic FAQs injected via JS -->
+                </div>
+
+                <!-- User Question Submission Form -->
+                <div class="mt-12 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-md">
+                    <h3 class="font-academic text-2xl font-bold text-slate-900 mb-2">Bạn Vẫn Còn Câu Hỏi?</h3>
+                    <p class="text-xs text-slate-500 mb-6">Gửi câu hỏi của bạn cho Ban tư vấn tuyển sinh & Tân sinh viên. Chúng tôi sẽ giải đáp nhanh nhất!</p>
+                    
+                    <form onsubmit="handleNewQuestion(event)" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <input type="text" id="q-name" placeholder="Họ và tên của bạn" required class="px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                            <input type="email" id="q-email" placeholder="Địa chỉ email nhận phản hồi" required class="px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                        </div>
+                        <textarea id="q-content" rows="3" placeholder="Nội dung câu hỏi chi tiết..." required class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500"></textarea>
+                        <button type="submit" class="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-navy-950 font-bold text-sm rounded-xl transition shadow-md">
+                            <i class="fa-solid fa-paper-plane mr-2"></i> Gửi câu hỏi ngay
+                        </button>
+                    </form>
+
+                    <!-- User Submitted Questions display -->
+                    <div id="user-questions-section" class="mt-8 border-t pt-6 hidden">
+                        <h4 class="text-sm font-bold text-slate-800 mb-3">Câu Hỏi Của Bạn Đã Gửi:</h4>
+                        <div id="user-questions-list" class="space-y-2"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 6: LIÊN HỆ & HỖ TRỢ (CONTACT) -->
+        <section id="section-contact" class="page-section hidden py-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-amber-600 font-semibold text-xs tracking-wider uppercase bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Kênh Hỗ Trợ 24/7</span>
+                    <h2 class="font-academic text-3xl sm:text-4xl font-bold text-slate-900 mt-2">Thông Tin Liên Hệ Khẩn Cấp</h2>
+                    <p class="text-slate-600 text-sm mt-2">Sẵn sàng kết nối và hỗ trợ bạn trong suốt quá trình làm thủ tục nhập học.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-8">
+                    
+                    <!-- Emergency Phone Cards -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <h3 class="font-academic text-xl font-bold text-slate-900 mb-4">Đường Dây Nóng Trực Tiếp</h3>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-amber-400 transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-blue-50 text-academic-blue flex items-center justify-center text-xl">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Phòng Đào Tạo & Học Vụ</h4>
+                                    <p class="text-xs text-slate-500">Tòa nhà A1 - Phòng 102</p>
+                                </div>
+                            </div>
+                            <a href="tel:02438692012" class="px-4 py-2 bg-slate-100 hover:bg-academic-blue hover:text-white text-navy-900 text-xs font-bold rounded-xl transition flex items-center gap-1">
+                                <i class="fa-solid fa-phone"></i> Gọi
+                            </a>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-amber-400 transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+                                    <i class="fa-solid fa-bed"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Ban Quản Lý Ký Túc Xá</h4>
+                                    <p class="text-xs text-slate-500">Khu KTX Nhà B5</p>
+                                </div>
+                            </div>
+                            <a href="tel:02438692015" class="px-4 py-2 bg-slate-100 hover:bg-amber-500 hover:text-navy-950 text-navy-900 text-xs font-bold rounded-xl transition flex items-center gap-1">
+                                <i class="fa-solid fa-phone"></i> Gọi
+                            </a>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-amber-400 transition">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl">
+                                    <i class="fa-solid fa-user-doctor"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Trạm Y Tế Trường</h4>
+                                    <p class="text-xs text-slate-500">Cạnh cổng Parabol A2</p>
+                                </div>
+                            </div>
+                            <a href="tel:02438692019" class="px-4 py-2 bg-slate-100 hover:bg-rose-600 hover:text-white text-navy-900 text-xs font-bold rounded-xl transition flex items-center gap-1">
+                                <i class="fa-solid fa-phone"></i> Gọi
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Contact / Feedback Form -->
+                    <div class="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-lg">
+                        <h3 class="font-academic text-2xl font-bold text-slate-900 mb-2">Gửi Yêu Cầu Hỗ Trợ / Góp Ý</h3>
+                        <p class="text-xs text-slate-500 mb-6">Ý kiến đóng góp của bạn giúp chúng tôi nâng cao chất lượng phục vụ tân sinh viên.</p>
+
+                        <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Họ và tên</label>
+                                    <input type="text" id="ct-name" required placeholder="Nguyễn Văn A" class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Số điện thoại</label>
+                                    <input type="tel" id="ct-phone" required placeholder="0987654321" class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Email liên hệ</label>
+                                <input type="email" id="ct-email" required placeholder="example@student.edu.vn" class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Nội dung yêu cầu</label>
+                                <textarea id="ct-message" rows="4" required placeholder="Mô tả thắc mắc hoặc vấn đề cần hỗ trợ..." class="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-amber-500"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full py-3.5 bg-navy-900 hover:bg-slate-800 text-white font-bold text-sm rounded-xl transition shadow-md">
+                                <i class="fa-solid fa-paper-plane mr-2 text-amber-400"></i> Gửi thông tin hỗ trợ
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- MODALS                                     -->
+    <!-- ========================================== -->
+
+    <!-- Article Detail Modal -->
+    <div id="article-modal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative border border-slate-200">
+            <button onclick="closeArticleModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition z-10">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="article-modal-content" class="p-6 sm:p-10">
+                <!-- Dynamic Article Modal Data -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Location Detail Modal -->
+    <div id="location-modal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative border border-slate-200">
+            <button onclick="closeLocationModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/80 hover:bg-white flex items-center justify-center text-slate-800 transition z-10 shadow">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div id="location-modal-content">
+                <!-- Dynamic Location Modal Data -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FOOTER                                     -->
+    <!-- ========================================== -->
+    <footer class="bg-navy-950 text-slate-400 border-t border-slate-800 py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-3 md:col-span-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500 text-navy-950 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-graduation-cap text-xl"></i>
+                        </div>
+                        <span class="font-academic text-xl font-bold text-white tracking-tight">CẨM NANG TÂN SINH VIÊN</span>
+                    </div>
+                    <p class="text-xs text-slate-400 max-w-sm leading-relaxed">
+                        Nền tảng hỗ trợ sinh viên khởi đầu thuận lợi, hiện đại và chuẩn xác. Sản phẩm dành tặng cộng đồng tân sinh viên Việt Nam.
+                    </p>
+                </div>
+                
+                <div>
+                    <h5 class="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3">Truy Cập Nhanh</h5>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#home" onclick="showSection('home')" class="hover:text-amber-400 transition">Trang chủ</a></li>
+                        <li><a href="#handbook" onclick="showSection('handbook')" class="hover:text-amber-400 transition">Cẩm nang hướng dẫn</a></li>
+                        <li><a href="#campus" onclick="showSection('campus')" class="hover:text-amber-400 transition">Sơ đồ cơ sở</a></li>
+                        <li><a href="#tools" onclick="showSection('tools')" class="hover:text-amber-400 transition">Bộ công cụ sinh viên</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-xs font-bold text-slate-200 uppercase tracking-wider mb-3">Thông Tin</h5>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-2">
+                        Phiên bản: 2.0 (Client-side SPA)<br>
+                        Hỗ trợ miễn phí 100%
+                    </p>
+                    <div class="flex gap-3 text-slate-300">
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center hover:text-amber-400 transition"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center hover:text-amber-400 transition"><i class="fa-brands fa-youtube text-xs"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center hover:text-amber-400 transition"><i class="fa-solid fa-globe text-xs"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-800/80 text-center text-xs text-slate-500">
+                <p>© 2026 Cẩm Nang Tân Sinh Viên. Được thiết kế với tâm huyết dành cho sinh viên Việt Nam.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT LOGIC                           -->
+    <!-- ========================================== -->
+    <script>
+        /* ---------------------------------------------------- */
+        /* 1. DATASETS (Sample Vietmamese Data)               */
+        /* ---------------------------------------------------- */
+        const ARTICLES = [
+            {
+                id: 'art-1',
+                category: 'thutuc',
+                title: 'Hướng dẫn chuẩn bị bộ hồ sơ nhập học đầy đủ từ A-Z',
+                desc: 'Danh sách chi tiết các loại giấy tờ bắt buộc, bản sao công chứng và lưu ý khi làm thủ tục trực tiếp tại trường.',
+                readTime: '5 phút đọc',
+                views: 1240,
+                image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80',
+                content: `
+                    <p class="mb-4 text-slate-700 leading-relaxed">Việc chuẩn bị đầy đủ hồ sơ nhập học là bước quan trọng đầu tiên giúp tân sinh viên hoàn thành thủ tục nhanh chóng, tránh việc phải đi lại nhiều lần.</p>
+                    <h4 class="font-academic text-xl font-bold text-navy-900 mb-2">1. Giấy tờ cá nhân bắt buộc:</h4>
+                    <ul class="list-disc pl-5 space-y-1 text-sm text-slate-600 mb-4">
+                        <li><strong>Giấy báo trúng tuyển</strong> (Bản gốc + 02 bản photo công chứng)</li>
+                        <li><strong>Học bạ THPT</strong> (Bản gốc + 01 bản sao chứng thực)</li>
+                        <li><strong>Bằng tốt nghiệp THPT</strong> hoặc Giấy chứng nhận tốt nghiệp tạm thời.</li>
+                        <li><strong>Căn cước công dân (CCCD)</strong> (03 bản photo công chứng).</li>
+                        <li><strong>Ảnh thẻ 3x4 và 4x6</strong> (Mỗi loại 4-6 ảnh, ghi rõ họ tên và ngày sinh mặt sau).</li>
+                    </ul>
+                    <h4 class="font-academic text-xl font-bold text-navy-900 mb-2">2. Giấy tờ ưu tiên & Nghĩa vụ quân sự (Nam):</h4>
+                    <p class="text-sm text-slate-600 mb-4">Sinh viên nam cần chuẩn bị Giấy đăng ký nghĩa vụ quân sự và Giấy xát nhận vắng mặt do Ban chỉ huy quân sự địa phương cấp.</p>
+                    <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl my-4 text-xs text-amber-900">
+                        <strong>Lưu ý quan trọng:</strong> Hãy scan hoặc chụp lại toàn bộ giấy tờ lưu trên điện thoại/Google Drive để dự phòng khi cần thiết!
+                    </div>
+                `
+            },
+            {
+                id: 'art-2',
+                category: 'hocvu',
+                title: 'Bí quyết săn Học bổng Khuyến khích Học tập Kỳ I',
+                desc: 'Chiến lược đăng ký tín chỉ thông minh, phân bổ thời gian học tập để đạt GPA xuất sắc ngay từ học kỳ đầu tiên.',
+                readTime: '7 phút đọc',
+                views: 980,
+                image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80',
+                content: `
+                    <p class="mb-4 text-slate-700 leading-relaxed">Học bổng Khuyến khích Học tập (KKHT) là phần thưởng giá trị dành cho sinh viên có điểm GPA và điểm Rèn luyện xuất sắc trong từng học kỳ.</p>
+                    <h4 class="font-academic text-xl font-bold text-navy-900 mb-2">Điều kiện xét học bổng:</h4>
+                    <ul class="list-disc pl-5 space-y-1 text-sm text-slate-600 mb-4">
+                        <li>Đăng ký đủ số tín chỉ tối thiểu theo quy định (thường từ 14 - 16 tín chỉ).</li>
+                        <li>Không có môn nào bị điểm F hoặc phải thi lại.</li>
+                        <li>Điểm Rèn luyện đạt từ loại Tốt trở lên (≥ 80 điểm).</li>
+                    </ul>
+                    <p class="text-sm text-slate-600">Hãy tích cực tham gia các hoạt động Đoàn - Hội ngay từ tuần đầu tiên để tích lũy điểm rèn luyện!</p>
+                `
+            },
+            {
+                id: 'art-3',
+                category: 'kytucxa',
+                title: 'Kinh nghiệm ở Ký túc xá vs Thuê nhà trọ bên ngoài',
+                desc: 'So sánh ưu nhược điểm về chi phí, an ninh, tiện nghi giúp tân sinh viên lựa chọn chỗ ở phù hợp nhất.',
+                readTime: '6 phút đọc',
+                views: 2100,
+                image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=600&q=80',
+                content: `
+                    <p class="mb-4 text-slate-700 leading-relaxed">Lựa chọn nơi ở là quyết định quan trọng ảnh hưởng trực tiếp đến sinh hoạt và học tập của tân sinh viên.</p>
+                    <div class="grid sm:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-slate-50 p-4 rounded-xl border">
+                            <h5 class="font-bold text-navy-900 text-sm mb-2">🏫 Ký túc xá trường</h5>
+                            <p class="text-xs text-slate-600 leading-relaxed"><strong>Ưu điểm:</strong> Chi phí rất rẻ (200k-500k/tháng), an ninh tuyệt đối, gần giảng đường.<br><strong>Nhược điểm:</strong> Giờ giấc nghiêm ngặt, chung phòng nhiều bạn.</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-xl border">
+                            <h5 class="font-bold text-navy-900 text-sm mb-2">🏠 Thuê nhà trọ ngoài</h5>
+                            <p class="text-xs text-slate-600 leading-relaxed"><strong>Ưu điểm:</strong> Tự do giờ giấc, không gian riêng tư.<br><strong>Nhược điểm:</strong> Chi phí cao (2-4 triệu/tháng), tự quản lý an ninh và điện nước.</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'art-4',
+                category: 'doisong',
+                title: 'Top 5 Câu lạc bộ Sinh viên đáng tham gia nhất',
+                desc: 'Khám phá môi trường rèn luyện kỹ năng mềm, mở rộng mối quan hệ và tạo dựng kỷ niệm thời sinh viên.',
+                readTime: '4 phút đọc',
+                views: 1540,
+                image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80',
+                content: `
+                    <p class="mb-4 text-slate-700 leading-relaxed">Tham gia Câu lạc bộ (CLB) là cách nhanh nhất giúp bạn đập tan cảm giác bỡ ngỡ ban đầu khi bước chân vào môi trường đại học.</p>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-slate-600 mb-4">
+                        <li><strong>CLB Tình nguyện:</strong> Nơi lan tỏa yêu thương và rèn luyện kỹ năng làm việc nhóm.</li>
+                        <li><strong>CLB Học thuật & Tiếng Anh:</strong> Hỗ trợ nâng cao kiến thức chuyên ngành và ngoại ngữ.</li>
+                        <li><strong>CLB Nghệ thuật (Music/Dance):</strong> Thỏa sức thể hiện đam mê và năng khiếu bản thân.</li>
+                        <li><strong>CLB Thể thao:</strong> Rèn luyện thể lực sau những giờ học căng thẳng.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 'art-5',
+                category: 'thutuc',
+                title: 'Quy trình làm Thẻ sinh viên tích hợp Thẻ ngân hàng',
+                desc: 'Các bước chụp ảnh thẻ, hoàn thiện biểu mẫu đăng ký và nhận thẻ sinh viên thông minh.',
+                readTime: '3 phút đọc',
+                views: 890,
+                image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80',
+                content: `
+                    <p class="mb-4 text-slate-700 leading-relaxed">Thẻ sinh viên hiện đại không chỉ dùng để điểm danh, vào thư viện mà còn tích hợp tài khoản ngân hàng thanh toán học phí.</p>
+                    <p class="text-sm text-slate-600">Sinh viên sẽ thực hiện đăng ký trực tuyến tại Cổng thông tin sinh viên, kiểm tra chính xác thông tin cá nhân và chụp ảnh theo chuẩn quy định.</p>
+                `
+            },
+            {
+                id: 'art-6',
+                category: 'hocvu',
+                title: 'Cẩm nang Đăng ký Tín chỉ không lo bị ngắt mạng',
+                desc: 'Mẹo chuẩn bị thiết bị, lựa chọn thời khóa biểu dự phòng và thao tác đăng ký môn học thành công.',
+                readTime: '5 phút đọc',
+                views: 3100,
+                image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80',
+                content: `
+                    <p class="mb-4 text-slate-700 leading-relaxed">Đăng ký tín chỉ là "cuộc chiến" quen thuộc của mọi sinh viên đại học. Hãy chuẩn bị sẵn sàng với các mẹo sau:</p>
+                    <ul class="list-disc pl-5 space-y-1 text-sm text-slate-600 mb-4">
+                        <li>Lên trước 2-3 phương án thời khóa biểu dự phòng.</li>
+                        <li>Đăng nhập cổng thông tin trước giờ mở cổng 10-15 phút.</li>
+                        <li>Sử dụng mạng internet kết nối dây ổn định.</li>
+                    </ul>
+                `
+            }
+        ];
+
+        const LOCATIONS = [
+            {
+                id: 'loc-1',
+                category: 'giangduong',
+                name: 'Tòa nhà Giảng đường Trung tâm A1',
+                address: 'Khu A - Trung tâm khuôn viên trường',
+                hours: '06:30 - 21:00 (Thứ 2 - Thứ 7)',
+                phone: '024 3869 1111',
+                image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80',
+                desc: 'Cụm giảng đường hiện đại gồm 50+ phòng học trang bị điều hòa, máy chiếu và hệ thống âm thanh chuẩn quốc tế.'
+            },
+            {
+                id: 'loc-2',
+                category: 'thuvien',
+                name: 'Thư viện Tạ Quang Bửu / Trung tâm Tri thức',
+                address: 'Tòa nhà Thư viện 6 Tầng',
+                hours: '07:30 - 20:30 (Hàng ngày)',
+                phone: '024 3869 2222',
+                image: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=600&q=80',
+                desc: 'Không gian tự học yên tĩnh với hơn 100,000 đầu sách, phòng thảo luận nhóm và hệ thống máy tính tra cứu miễn phí.'
+            },
+            {
+                id: 'loc-3',
+                category: 'ktx',
+                name: 'Khu Ký túc xá Sinh viên B5 - B7',
+                address: 'Khu C nội thành khuôn viên',
+                hours: 'Cổng mở: 05:30 - 23:00',
+                phone: '024 3869 3333',
+                image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=600&q=80',
+                desc: 'Bao gồm các phòng ở khép kín 4-8 sinh viên, tích hợp canteen, sân thể thao và phòng giặt tự động.'
+            },
+            {
+                id: 'loc-4',
+                category: 'phongban',
+                name: 'Phòng Một Cửa / Ban Dịch vụ Sinh viên',
+                address: 'Tầng 1 - Tòa nhà Hành chính',
+                hours: '08:00 - 17:00 (Thứ 2 - Thứ 6)',
+                phone: '024 3869 4444',
+                image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80',
+                desc: 'Nơi giải quyết toàn bộ thủ tục cấp giấy chứng nhận sinh viên, vé xe bus, xác nhận tạm hoãn NVQS.'
+            }
+        ];
+
+        const FAQS = [
+            {
+                id: 'faq-1',
+                q: 'Nộp hồ sơ nhập học trễ so với thời hạn trên giấy báo có sao không?',
+                a: 'Theo quy định, sinh viên cần nộp hồ sơ đúng thời hạn. Trường hợp có lý do đặc biệt (bệnh tật, thiên tai), bạn cần gửi đơn xin lùi thời gian nhập học kèm minh chứng cho Phòng Đào tạo trước hạn.'
+            },
+            {
+                id: 'faq-2',
+                q: 'Bảo hiểm y tế sinh viên có bắt buộc phải mua tại trường không?',
+                a: 'Bảo hiểm y tế (BHYT) là bắt buộc theo Luật. Nếu bạn đã có thẻ BHYT thuộc hộ nghèo, thân nhân công an/quân đội còn hạn, bạn chỉ cần nộp bản photo cho trường để miễn đóng trùng.'
+            },
+            {
+                id: 'faq-3',
+                q: 'Đăng ký ở Ký túc xá như thế nào và đối tượng nào được ưu tiên?',
+                a: 'Đăng ký KTX trực tuyến qua cổng thông tin. Đối tượng ưu tiên bao gồm: Sinh viên con thương binh/liệt sĩ, gia đình nghèo/cận nghèo, vùng sâu vùng xa, và tân sinh viên có điểm thi xuất sắc.'
+            },
+            {
+                id: 'faq-4',
+                q: 'Làm thế nào để xin giấy xác nhận sinh viên làm vé xe bus giảm giá?',
+                a: 'Bạn đến Phòng Dịch vụ Sinh viên (Phòng Một Cửa) đăng ký xin cấp Giấy xác nhận sinh viên. Thời gian xử lý từ 1-2 ngày làm việc.'
+            }
+        ];
+
+        const DEFAULT_CHECKLIST = [
+            { id: 1, text: 'Giấy báo trúng tuyển (Bản gốc)', completed: false },
+            { id: 2, text: 'Học bạ THPT (Bản sao công chứng)', completed: false },
+            { id: 3, text: 'Bằng tốt nghiệp hoặc Giấy chứng nhận tạm thời', completed: false },
+            { id: 4, text: 'Căn cước công dân photo công chứng (03 bản)', completed: false },
+            { id: 5, text: 'Ảnh thẻ 3x4 và 4x6 (Mỗi loại 4 tấm)', completed: false },
+            { id: 6, text: 'Giấy chuyển sinh hoạt Đảng/Đoàn (nếu có)', completed: false },
+            { id: 7, text: 'Giấy đăng ký Nghĩa vụ quân sự (đối với Nam)', completed: false },
+            { id: 8, text: 'Thẻ BHYT / Giấy tờ ưu tiên (nếu có)', completed: false }
+        ];
+
+        /* ---------------------------------------------------- */
+        /* 2. STATE MANAGEMENT & LOCAL STORAGE                  */
+        /* ---------------------------------------------------- */
+        let checklistItems = JSON.parse(localStorage.getItem('student_checklist')) || DEFAULT_CHECKLIST;
+        let bookmarkedArticles = JSON.parse(localStorage.getItem('student_bookmarks')) || [];
+        let userQuestions = JSON.parse(localStorage.getItem('student_questions')) || [];
+
+        /* ---------------------------------------------------- */
+        /* 3. CORE NAVIGATION & ROUTING                         */
+        /* ---------------------------------------------------- */
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+            
+            // Show target section
+            const target = document.getElementById(`section-${sectionId}`);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            // Update Nav item highlights
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-amber-400', 'bg-slate-800');
+            });
+            const activeNav = document.getElementById(`nav-${sectionId}`);
+            if (activeNav) {
+                activeNav.classList.add('text-amber-400', 'bg-slate-800');
+            }
+
+            // Scroll top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        /* ---------------------------------------------------- */
+        /* 4. COUNTDOWN TIMER                                   */
+        /* ---------------------------------------------------- */
+        function initCountdown() {
+            // Set target date (e.g. September 5th orientation day)
+            const targetDate = new Date(new Date().getFullYear(), 8, 5, 8, 0, 0).getTime();
+
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = targetDate - now;
+
+                if (diff > 0) {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    document.getElementById('cd-days').innerText = days < 10 ? '0' + days : days;
+                    document.getElementById('cd-hours').innerText = hours < 10 ? '0' + hours : hours;
+                    document.getElementById('cd-minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+                    document.getElementById('cd-seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+                }
+            }, 1000);
+        }
+
+        /* ---------------------------------------------------- */
+        /* 5. ARTICLES & HANDBOOK MODULE                        */
+        /* ---------------------------------------------------- */
+        function renderArticles(items) {
+            const container = document.getElementById('articles-grid');
+            if (!container) return;
+
+            if (items.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-12 text-slate-500">Không tìm thấy bài viết phù hợp.</div>`;
+                return;
+            }
+
+            container.innerHTML = items.map(art => {
+                const isSaved = bookmarkedArticles.includes(art.id);
+                return `
+                    <div class="glass-card bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col justify-between group">
+                        <div>
+                            <div class="relative overflow-hidden h-48">
+                                <img src="${art.image}" alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute top-3 left-3 bg-navy-900/90 text-amber-400 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
+                                    ${getCategoryName(art.category)}
+                                </span>
+                                <button onclick="toggleBookmark('${art.id}', event)" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 hover:bg-white text-slate-700 flex items-center justify-center transition shadow">
+                                    <i class="${isSaved ? 'fa-solid text-rose-500' : 'fa-regular'} fa-bookmark"></i>
+                                </button>
+                            </div>
+                            <div class="p-5">
+                                <div class="flex items-center gap-3 text-xs text-slate-400 mb-2">
+                                    <span><i class="fa-regular fa-clock mr-1"></i>${art.readTime}</span>
+                                    <span>•</span>
+                                    <span><i class="fa-regular fa-eye mr-1"></i>${art.views} lượt xem</span>
+                                </div>
+                                <h3 class="font-academic text-xl font-bold text-slate-900 group-hover:text-academic-blue transition leading-snug mb-2">
+                                    ${art.title}
+                                </h3>
+                                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                                    ${art.desc}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <button onclick="openArticleModal('${art.id}')" class="w-full py-2.5 rounded-xl bg-slate-50 hover:bg-navy-900 hover:text-white text-slate-700 font-semibold text-xs transition border border-slate-200">
+                                Đọc tiếp bài viết <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getCategoryName(cat) {
+            const map = {
+                'thutuc': 'Thủ tục nhập học',
+                'hocvu': 'Học vụ & Học bổng',
+                'kytucxa': 'Ký túc xá & Trọ',
+                'doisong': 'Đời sống sinh viên'
+            };
+            return map[cat] || 'Cẩm nang';
+        }
+
+        function filterArticles(category) {
+            // Update active filter button
+            document.querySelectorAll('.hb-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-navy-900', 'text-white');
+                btn.classList.add('bg-white', 'text-slate-700');
+            });
+            event.target.classList.remove('bg-white', 'text-slate-700');
+            event.target.classList.add('bg-navy-900', 'text-white');
+
+            if (category === 'all') {
+                renderArticles(ARTICLES);
+            } else {
+                const filtered = ARTICLES.filter(a => a.category === category);
+                renderArticles(filtered);
+            }
+        }
+
+        function openArticleModal(id) {
+            const art = ARTICLES.find(a => a.id === id);
+            if (!art) return;
+
+            const modalContent = document.getElementById('article-modal-content');
+            modalContent.innerHTML = `
+                <span class="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full uppercase tracking-wider">${getCategoryName(art.category)}</span>
+                <h2 class="font-academic text-2xl sm:text-3xl font-bold text-navy-900 mt-3 mb-2">${art.title}</h2>
+                <div class="flex items-center gap-4 text-xs text-slate-400 border-b pb-4 mb-6">
+                    <span><i class="fa-regular fa-clock mr-1"></i>${art.readTime}</span>
+                    <span><i class="fa-regular fa-eye mr-1"></i>${art.views} lượt xem</span>
+                </div>
+                <img src="${art.image}" class="w-full h-64 object-cover rounded-2xl mb-6 shadow">
+                <div class="prose max-w-none text-slate-700 text-sm leading-relaxed">
+                    ${art.content}
+                </div>
+            `;
+
+            document.getElementById('article-modal').classList.remove('hidden');
+        }
+
+        function closeArticleModal() {
+            document.getElementById('article-modal').classList.add('hidden');
+        }
+
+        function toggleBookmark(id, event) {
+            event.stopPropagation();
+            if (bookmarkedArticles.includes(id)) {
+                bookmarkedArticles = bookmarkedArticles.filter(item => item !== id);
+                Swal.fire({ title: 'Đã bỏ lưu bài viết', icon: 'info', timer: 1200, showConfirmButton: false });
+            } else {
+                bookmarkedArticles.push(id);
+                Swal.fire({ title: 'Đã lưu vào danh sách yêu thích', icon: 'success', timer: 1200, showConfirmButton: false });
+            }
+            localStorage.setItem('student_bookmarks', JSON.stringify(bookmarkedArticles));
+            renderArticles(ARTICLES);
+        }
+
+        /* ---------------------------------------------------- */
+        /* 6. LOCATIONS & MAP MODULE                            */
+        /* ---------------------------------------------------- */
+        function renderLocations(items) {
+            const container = document.getElementById('locations-grid');
+            if (!container) return;
+
+            container.innerHTML = items.map(loc => `
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md border border-slate-200 transition group flex flex-col justify-between">
+                    <div>
+                        <div class="h-40 overflow-hidden relative">
+                            <img src="${loc.image}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute bottom-2 left-2 bg-emerald-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                                <i class="fa-solid fa-clock mr-1"></i>${loc.hours}
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-academic text-lg font-bold text-slate-900 group-hover:text-amber-600 transition mb-1">${loc.name}</h3>
+                            <p class="text-xs text-slate-500 mb-3"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i>${loc.address}</p>
+                            <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed">${loc.desc}</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="openLocationModal('${loc.id}')" class="w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition">
+                            <i class="fa-solid fa-map-pin mr-1 text-amber-500"></i>Xem bản đồ chi tiết
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterLocations(category) {
+            document.querySelectorAll('.loc-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-navy-900', 'text-white');
+                btn.classList.add('bg-white', 'text-slate-700');
+            });
+            event.target.classList.remove('bg-white', 'text-slate-700');
+            event.target.classList.add('bg-navy-900', 'text-white');
+
+            if (category === 'all') {
+                renderLocations(LOCATIONS);
+            } else {
+                renderLocations(LOCATIONS.filter(l => l.category === category));
+            }
+        }
+
+        function openLocationModal(id) {
+            const loc = LOCATIONS.find(l => l.id === id);
+            if (!loc) return;
+
+            document.getElementById('location-modal-content').innerHTML = `
+                <img src="${loc.image}" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="font-academic text-2xl font-bold text-navy-900 mb-2">${loc.name}</h3>
+                    <p class="text-xs text-slate-600 mb-2"><i class="fa-solid fa-location-dot text-rose-500 mr-1.5"></i><strong>Địa chỉ:</strong> ${loc.address}</p>
+                    <p class="text-xs text-slate-600 mb-2"><i class="fa-regular fa-clock text-amber-500 mr-1.5"></i><strong>Giờ hoạt động:</strong> ${loc.hours}</p>
+                    <p class="text-xs text-slate-600 mb-4"><i class="fa-solid fa-phone text-emerald-500 mr-1.5"></i><strong>Điện thoại:</strong> ${loc.phone}</p>
+                    <p class="text-xs text-slate-700 leading-relaxed border-t pt-3 mb-6">${loc.desc}</p>
+                    <div class="flex justify-end gap-2">
+                        <button onclick="closeLocationModal()" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 rounded-xl text-xs font-bold text-slate-700">Đóng</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('location-modal').classList.remove('hidden');
+        }
+
+        function closeLocationModal() {
+            document.getElementById('location-modal').classList.add('hidden');
+        }
+
+        /* ---------------------------------------------------- */
+        /* 7. INTERACTIVE CHECKLIST TOOL                        */
+        /* ---------------------------------------------------- */
+        function renderChecklist() {
+            const container = document.getElementById('checklist-items-container');
+            if (!container) return;
+
+            const completedCount = checklistItems.filter(i => i.completed).length;
+            const totalCount = checklistItems.length;
+            const percentage = totalCount === 0 ? 0 : Math.round((completedCount / totalCount) * 100);
+
+            // Update Progress UI
+            document.getElementById('checklist-count').innerText = `${completedCount}/${totalCount} Đã hoàn thành`;
+            const progressBar = document.getElementById('checklist-progress-bar');
+            progressBar.style.width = `${percentage}%`;
+
+            // Check if 100% completed -> Fire Confetti!
+            if (percentage === 100 && totalCount > 0) {
+                fireCelebration();
+            }
+
+            container.innerHTML = checklistItems.map((item, idx) => `
+                <div class="flex items-center justify-between p-3.5 rounded-xl border ${item.completed ? 'bg-emerald-50/60 border-emerald-200' : 'bg-slate-50 border-slate-200'} transition">
+                    <label class="flex items-center gap-3 cursor-pointer flex-grow">
+                        <input type="checkbox" ${item.completed ? 'checked' : ''} onchange="toggleChecklistItem(${item.id})"
+                               class="w-5 h-5 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                        <span class="text-sm font-medium ${item.completed ? 'line-through text-slate-400' : 'text-slate-800'}">${item.text}</span>
+                    </label>
+                    <button onclick="deleteChecklistItem(${item.id})" class="text-slate-400 hover:text-rose-500 p-1 transition">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            // Save state
+            localStorage.setItem('student_checklist', JSON.stringify(checklistItems));
+        }
+
+        function toggleChecklistItem(id) {
+            checklistItems = checklistItems.map(item => item.id === id ? { ...item, completed: !item.completed } : item);
+            renderChecklist();
+        }
+
+        function addChecklistItem(e) {
+            e.preventDefault();
+            const input = document.getElementById('new-item-input');
+            const val = input.value.trim();
+            if (val) {
+                checklistItems.push({ id: Date.now(), text: val, completed: false });
+                input.value = '';
+                renderChecklist();
+            }
+        }
+
+        function deleteChecklistItem(id) {
+            checklistItems = checklistItems.filter(item => item.id !== id);
+            renderChecklist();
+        }
+
+        function resetChecklist() {
+            Swal.fire({
+                title: 'Khôi phục danh sách mặc định?',
+                text: "Thao tác này sẽ đặt lại bộ checklist ban đầu.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#1e293b',
+                cancelButtonColor: '#cbd5e1',
+                confirmButtonText: 'Đồng ý',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    checklistItems = [...DEFAULT_CHECKLIST];
+                    renderChecklist();
+                    Swal.fire({ title: 'Đã hoàn tất!', icon: 'success', timer: 1000, showConfirmButton: false });
+                }
+            });
+        }
+
+        function fireCelebration() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+        }
+
+        /* ---------------------------------------------------- */
+        /* 8. BUDGET PLANNER TOOL                               */
+        /* ---------------------------------------------------- */
+        function switchToolTab(tab) {
+            const checklistWrapper = document.getElementById('tool-checklist-wrapper');
+            const budgetWrapper = document.getElementById('tool-budget-wrapper');
+            const btnChecklist = document.getElementById('tab-btn-checklist');
+            const btnBudget = document.getElementById('tab-btn-budget');
+
+            if (tab === 'checklist') {
+                checklistWrapper.classList.remove('hidden');
+                budgetWrapper.classList.add('hidden');
+                btnChecklist.className = "px-6 py-2.5 rounded-xl text-sm font-bold bg-white text-navy-900 shadow-sm transition";
+                btnBudget.className = "px-6 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:text-navy-900 transition";
+            } else {
+                checklistWrapper.classList.add('hidden');
+                budgetWrapper.classList.remove('hidden');
+                btnBudget.className = "px-6 py-2.5 rounded-xl text-sm font-bold bg-white text-navy-900 shadow-sm transition";
+                btnChecklist.className = "px-6 py-2.5 rounded-xl text-sm font-bold text-slate-600 hover:text-navy-900 transition";
+                calculateBudget();
+            }
+        }
+
+        function calculateBudget() {
+            const hocphi = parseFloat(document.getElementById('bg-hocphi').value) || 0;
+            const nhatro = parseFloat(document.getElementById('bg-nhatro').value) || 0;
+            const anuong = parseFloat(document.getElementById('bg-anuong').value) || 0;
+            const dichuyen = parseFloat(document.getElementById('bg-dichuyen').value) || 0;
+            const dodung = parseFloat(document.getElementById('bg-dodung').value) || 0;
+
+            const total = hocphi + nhatro + anuong + dichuyen + dodung;
+            const sinhHoat = nhatro + anuong;
+            const khac = dichuyen + dodung;
+
+            document.getElementById('bg-total-display').innerText = total.toLocaleString('vi-VN') + ' VNĐ';
+
+            if (total > 0) {
+                const pctHocPhi = Math.round((hocphi / total) * 100);
+                const pctSinhHoat = Math.round((sinhHoat / total) * 100);
+                const pctKhac = 100 - pctHocPhi - pctSinhHoat;
+
+                document.getElementById('pct-hocphi').innerText = pctHocPhi + '%';
+                document.getElementById('bar-hocphi').style.width = pctHocPhi + '%';
+
+                document.getElementById('pct-nhatro').innerText = pctSinhHoat + '%';
+                document.getElementById('bar-nhatro').style.width = pctSinhHoat + '%';
+
+                document.getElementById('pct-khac').innerText = pctKhac + '%';
+                document.getElementById('bar-khac').style.width = pctKhac + '%';
+            }
+        }
+
+        /* ---------------------------------------------------- */
+        /* 9. FAQ MODULE                                        */
+        /* ---------------------------------------------------- */
+        function renderFAQs(items) {
+            const container = document.getElementById('faq-list');
+            if (!container) return;
+
+            container.innerHTML = items.map((faq, index) => `
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                    <button onclick="toggleFAQ(${index})" class="w-full p-5 text-left font-bold text-slate-900 flex justify-between items-center hover:bg-slate-50 transition">
+                        <span class="text-sm font-academic text-base sm:text-lg">${faq.q}</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-300" id="faq-icon-${index}"></i>
+                    </button>
+                    <div class="hidden p-5 pt-0 text-xs text-slate-600 leading-relaxed border-t border-slate-100" id="faq-ans-${index}">
+                        ${faq.a}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleFAQ(index) {
+            const ans = document.getElementById(`faq-ans-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+            ans.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        function filterFAQs(query) {
+            const q = query.toLowerCase().trim();
+            if (!q) {
+                renderFAQs(FAQS);
+            } else {
+                const filtered = FAQS.filter(f => f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q));
+                renderFAQs(filtered);
+            }
+        }
+
+        function handleNewQuestion(e) {
+            e.preventDefault();
+            const name = document.getElementById('q-name').value;
+            const email = document.getElementById('q-email').value;
+            const content = document.getElementById('q-content').value;
+
+            const newQ = { id: Date.now(), name, email, content, date: new Date().toLocaleDateString('vi-VN') };
+            userQuestions.unshift(newQ);
+            localStorage.setItem('student_questions', JSON.stringify(userQuestions));
+
+            Swal.fire({
+                title: 'Đã gửi câu hỏi!',
+                text: 'Ban tư vấn sẽ phản hồi qua email của bạn trong thời gian sớm nhất.',
+                icon: 'success',
+                confirmButtonColor: '#1e293b'
+            });
+
+            e.target.reset();
+            renderUserQuestions();
+        }
+
+        function renderUserQuestions() {
+            const wrapper = document.getElementById('user-questions-section');
+            const container = document.getElementById('user-questions-list');
+            if (userQuestions.length > 0) {
+                wrapper.classList.remove('hidden');
+                container.innerHTML = userQuestions.map(q => `
+                    <div class="bg-slate-50 p-3 rounded-xl border text-xs text-slate-700">
+                        <div class="flex justify-between font-bold text-navy-900 mb-1">
+                            <span>${q.content}</span>
+                            <span class="text-[10px] text-slate-400 font-normal">${q.date}</span>
+                        </div>
+                        <span class="text-[10px] text-amber-600 font-semibold"><i class="fa-regular fa-clock mr-1"></i>Đang chờ giải đáp</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        /* ---------------------------------------------------- */
+        /* 10. GLOBAL SEARCH & CONTACT HANDLERS                 */
+        /* ---------------------------------------------------- */
+        function handleGlobalSearch(query) {
+            if (!query.trim()) return;
+            showSection('handbook');
+            const q = query.toLowerCase();
+            const matched = ARTICLES.filter(a => a.title.toLowerCase().includes(q) || a.desc.toLowerCase().includes(q));
+            renderArticles(matched);
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Gửi góp ý thành công!',
+                text: 'Cảm ơn bạn đã phản hồi. Chúng tôi đã nhận được thông tin.',
+                icon: 'success',
+                confirmButtonColor: '#1e293b'
+            });
+            e.target.reset();
+        }
+
+        /* ---------------------------------------------------- */
+        /* 11. INITIALIZATION ON PAGE LOAD                      */
+        /* ---------------------------------------------------- */
+        window.addEventListener('DOMContentLoaded', () => {
+            initCountdown();
+            renderArticles(ARTICLES);
+            renderLocations(LOCATIONS);
+            renderChecklist();
+            renderFAQs(FAQS);
+            renderUserQuestions();
+        });
+    </script>
+</body>
+</html>
